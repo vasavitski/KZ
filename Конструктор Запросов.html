@@ -1,0 +1,365 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title> Конструктор запросов</title>
+<meta charset = "UTF8" httpequiv = "contenttype"/>
+<style type="text/css">
+		.konstruktor
+		{
+			width: 100%;
+			height: 65%;
+			display: block;
+			border: 0px solid gray;
+		}
+		.tools
+		{
+			display: block;
+			float: left;
+			width: 30%;
+			border: 1px solid gray;
+			min-height: 500px;
+		}
+		#fieldTools, #rowTools
+		{
+			display: block;
+			width: 100%;
+			border: 1px solid gray;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		#preview
+		{
+			display: block;
+			float: left;
+			height: 100%;
+			min-height: 500px;
+			width: 69%;
+			border: 2px solid gray;
+		}
+		#previewField
+		{
+			display: block;
+			float: left;
+			height: 35px;
+			border: 1px solid;
+		}
+		#previewRows
+		{
+			display: block;
+			float: left;
+			width: 100%;
+		}		
+		.field {
+			display: block;
+			float: left;
+			text-align:left;
+			width: 100%;
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+		.field input
+		{
+			width: 200px;
+		}
+		.row input
+		{
+			width: 200px;	
+		}
+		label {float:right;}
+		.fieldreport
+		{
+			display: block;
+			float: left;
+			border: 1px solid gray;
+			padding: 5px;
+			min-width: 120px;
+			height: 25px;
+			text-align: center;
+		}
+		.rowreport
+		{
+			display: inline-block;
+			clear: both;
+			float: left;
+			
+			height: 35px;
+			text-align: center;
+			border: 1px solid;
+		}
+		.rowinput
+		{
+			display: block;
+			float: left;
+			border: 1px solid;
+			padding: 5px;
+			min-width: 120px;
+			height: 25px;
+			text-align: center;
+		}
+		label
+		{
+			padding-right: 5px;
+		}
+		.buttonPlus
+		{
+			display: block;
+			position: relative;
+			float: right;
+			top: -25px;
+		}
+	</style>
+
+</head>
+	<body>
+				<script>
+					function getElementPosition(elemId)
+						{
+    					var elem = document.getElementById(elemId);
+	
+					    var w = elem.offsetWidth;
+					    var h = elem.offsetHeight;
+							
+							var l = 0;
+						    var t = 0;
+							
+						    while (elem)
+						    {
+						        l += elem.offsetLeft;
+						        t += elem.offsetTop;
+						        elem = elem.offsetParent;
+						    }
+
+						    return {"left":l, "top":t, "width": w, "height":h};
+						}
+
+					function myFunc ()
+					{
+						var myNUM = document.getElementById("txt").value;; // Получим значение из текстового поля
+						var ch = isEven(myNUM); // Применим функцию
+						if (ch == true) // Добавим блок
+						{
+							var element = document.createElement('div');
+							element.innerHTML = myNUM;
+							element.className = "ChetBlock";
+							center.appendChild(element);
+						} 
+						if (ch == false)  // Добавим блок
+						{
+							var element = document.createElement('div');
+							element.innerHTML = myNUM;
+							element.className = "NEChetBlock";
+							center.appendChild(element);
+						} 
+					}
+						function addField ()
+					{
+						// Строим форму в Привью
+						var fieldlabel = document.getElementById("fieldname").value; // Получим значение
+						var viewfield = document.getElementById("viewfield").value; // Получим значение
+						var typefield = document.getElementById("typefield").value; // Получим значение
+						var obyazfield = document.getElementById("obyaz").checked; // Получим значение
+
+						var element = document.createElement('div');
+						element.innerHTML = fieldlabel;
+						element.className = "fieldreport";
+						previewField.appendChild(element);
+
+						// Запоминаем введенную информацию о структуре
+						var fieldtable = document.getElementById("fieldtable");
+						var newtr = document.createElement('tr'); //создаем еще строку
+
+						var td1 = document.createElement('td'); td1.innerHTML = fieldlabel; //создаем столбец
+						var td2 = document.createElement('td'); td2.innerHTML = viewfield; //создаем столбец
+						var td3 = document.createElement('td'); td3.innerHTML = typefield; //создаем столбец
+						var td4 = document.createElement('td'); 
+						if (obyazfield == true) {
+						td4.innerHTML = 'Да';}
+						else
+							{td4.innerHTML = 'Нет'}
+
+						newtr.appendChild(td1);
+						newtr.appendChild(td2);
+						newtr.appendChild(td3);
+						newtr.appendChild(td4);						
+
+						fieldtable.appendChild(newtr);
+						fieldTools.appendChild(fieldtable);
+
+					}
+						function addRow ()
+					{
+						// Строим форму в Привью
+						var typeRow = document.getElementById("typeRow").value;; // Получим значение
+						var countRow = document.getElementById("countRow").value;; // Получим значение
+
+						var element = document.createElement('div');
+						//element.innerHTML = typeRow;
+						element.className = "rowreport";
+						pos = getElementPosition("previewField");
+						element.style.width = String(pos.width-2+'px');
+						if (typeRow == 'Итог (автоматич.)') {element.style.background = 'gray'}
+							else {element.style.background = 'olive'};
+						
+						
+						var n = document.getElementsByClassName('fieldreport').length;
+						console.log(n);
+						var myhtml = '';
+						for (var i = 1; i <= n; i++)
+						{
+							
+						if (typeRow == 'Аналитика') {myhtml = myhtml + ' <div class="rowinput" style="background-color: #00FF00"> ' + document.getElementById("analiticsList").value +'</div> ';}
+							else {myhtml = myhtml + ' <input class="rowinput" size="10" style="background-color: #c0c0c0" value="' + document.getElementById("Komment").value + '"></input> ';};
+						
+						};
+						if (countRow == 'Произвольно'){myhtml = myhtml + '<input type="button" value="+" class="buttonPlus" onclick="addRows();">'}//Добавим кнопку
+						//if (countRow == 'Одна'){myhtml = document.getElementById("Komment").value};//Добавим кнопку							
+
+						element.innerHTML = myhtml;
+						previewRows.appendChild(element);
+
+						// Запоминаем введенную информацию о структуре
+						var rowtable = document.getElementById("rowtable");
+						var newtr = document.createElement('tr'); //создаем еще строку
+
+						var td1 = document.createElement('td');
+						if (typeRow == 'Аналитика'){td1.innerHTML = document.getElementById("analiticsList").value;}
+						else {td1.innerHTML = 'знач';}//{td1.innerHTML = typeRow;}
+
+						 
+						var td2 = document.createElement('td'); td2.innerHTML = countRow; //создаем столбец
+						var td3 = document.createElement('td'); td3.innerHTML = document.getElementById("Komment").value; //создаем столбец						
+
+						newtr.appendChild(td1);
+						newtr.appendChild(td2);
+						newtr.appendChild(td3);
+
+
+						rowtable.appendChild(newtr);
+						rowTools.appendChild(rowtable);
+
+					}
+					function viewAnalitics()
+					{
+						if (document.getElementById("typeRow").value == 'Аналитика')
+							{
+								document.getElementById("analiticsList").style.visibility = 'visible';
+								document.getElementById("countRow").value = 'Одна';
+							}
+						else
+							{document.getElementById("analiticsList").style.visibility = 'hidden';}
+						
+					}
+					function addRows()
+					{
+						var element = document.createElement('div');
+						element.className = "rowreport";
+						pos = getElementPosition("previewField");
+						element.style.width = String(pos.width+'px');
+						if (typeRow == 'Итог (автоматич.)') {element.style.background = 'gray'}
+							else {element.style.background = 'olive'};
+
+						var n = document.getElementsByClassName('fieldreport').length;
+						console.log(n);
+						var myhtml = '';
+						for (var i = 1; i <= n; i++)
+						{
+							
+						if (typeRow == 'Аналитика') {myhtml = myhtml + ' <div class="rowinput" style="background-color: #00FF00"> ' + document.getElementById("analiticsList").value +'</div> ';}
+							else {myhtml = myhtml + ' <input class="rowinput" size="10" style="background-color: #c0c0c0" value="' + document.getElementById("Komment").value + '"></input> ';};
+						
+						};
+						myhtml = myhtml + '<input type="button" value="+" class="buttonPlus" onclick="addRows();">';
+
+
+						element.innerHTML = myhtml;
+						previewRows.appendChild(element);
+
+					}
+				</script>
+		<div class="header">
+<!--			<input type="text" name="txt" id="txt" height="100px">
+			<input type="button" name="ok" onclick="myFunc();" value="Добавь число!!!" >
+			<h2>Игра "Четное/НЕ четное (применяем функции на практике)"</h2>-->
+		</div>
+		<div class="mycenter" id="center">
+		</div>
+			<div class="konstruktor">
+				<div class="tools">
+					<div id="fieldTools">
+	      				<div class="field"><input id="fieldname" value="Паровозы">
+	      				<label for="fieldname">Наименование столбца</label></div>
+						
+						<div class="field"><select id="viewfield">
+						  	<option>Значение</option>
+		  					<option>Эксперт.данные</option>
+						</select>
+						<label for="viewfield">Вид столбца</label>
+						</div>
+						
+						<div class="field"><select id="typefield">
+						  	<option>Текст</option>
+		  					<option>Число</option>
+		  					<option>Объект</option>
+						</select>
+						<label for="typefield">Тип столбца</label>
+						</div>
+
+						<div class="field">
+							<input type="checkbox" id="obyaz" checked="checked">
+							<label for="obyaz">Обязательное поле</label>
+						</div>
+					<input type="button" name="ok" onclick="addField();" value="Добавить столбец" style="background: coral">
+					<p>
+					<table border="1px" id="fieldtable" cellspacing="0">
+						<tr>
+							<td>Наименование поля</td>
+							<td>Вид поля</td>							
+							<td>Тип поля</td>
+							<td>Обязательность</td>							
+						</tr>
+					</table>
+
+					</div>
+					<div id="rowTools">						
+						<div class="row"><select id="typeRow" onchange="viewAnalitics();">
+						  	<option>Значение</option>
+		  					<option>Аналитика</option>
+						</select>
+						<select id="analiticsList" style="visibility: hidden;">
+						  	<option>Сумма</option>
+		  					<option>Среднее</option>
+		  					<option>Минимум</option>
+		  					<option>Максимум</option>
+						</select>
+						<label for="viewfield">Вид строки</label>
+						</div>
+						
+						<div class="row"><select id="countRow">
+						  	<option>Одна</option>
+		  					<!--<option>Несколько</option>-->
+		  					<option>Произвольно</option>
+						</select>
+						<label for="typefield">Тип строки</label>
+						</div>
+						<div class="row"><input id="Komment" value="Значение">
+	      				<label for="Komment">Примечание</label></div>
+	      			<p>
+					<input type="button" name="ok" onclick="addRow();" value="Добавить строку" style="background: coral">
+					<p>
+						<table border="1px" id="rowtable" cellspacing="0">
+						<tr>
+							<td>Вид строки</td>
+							<td>Тип строки</td>
+							<td>Примечание</td>														
+						</tr>
+					</table>
+
+					</div>
+				</div>
+				<div id="preview">
+					<div id="previewField"></div>
+					<div id="previewRows"></div>
+				</div>
+			</div>
+	</body>
+</html>
